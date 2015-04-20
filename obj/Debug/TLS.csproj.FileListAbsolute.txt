@@ -4,3 +4,6 @@ C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\bin\Debug\TLS.exe
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\bin\Debug\TLS.pdb
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\obj\Debug\TLS.exe
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\obj\Debug\TLS.pdb
+C:\Users\Admin\Documents\GitHub\Implementation-of-TLS\bin\Debug\TLS.exe.config
+C:\Users\Admin\Documents\GitHub\Implementation-of-TLS\obj\Debug\TLS.exe
+C:\Users\Admin\Documents\GitHub\Implementation-of-TLS\obj\Debug\TLS.pdb

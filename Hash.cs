@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace TLS
 {
@@ -22,8 +23,28 @@ namespace TLS
                 hash[i] = (byte)(halfA[i] ^ halfB[i]);
             }
 
-
             return Encoding.UTF8.GetString(hash);
+        }
+
+        /// <summary>
+        ///  A method which handles Signing of messages.
+        /// </summary>
+        public string Sign(string input, BigInteger D, BigInteger N)
+        {
+            BigInteger Input = new BigInteger(Encoding.UTF8.GetBytes(input));
+
+            return BigInteger.ModPow(Input, D, N).ToString();
+        }
+
+        /// <summary>
+        ///  A method which handles verifacation of messages
+        /// </summary>
+        public bool Verify(string message, string sign, BigInteger E, BigInteger N)
+        {
+            BigInteger Message = new BigInteger(Encoding.UTF8.GetBytes(message));
+            BigInteger Sign = new BigInteger(Encoding.UTF8.GetBytes(sign));
+
+            return BigInteger.ModPow(Sign, E, N).Equals(BigInteger.ModPow(Message,1,N));
         }
     }
 }
