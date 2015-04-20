@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace TLS
 {
+    /// <summary>
+    ///  A class which handles RSA encryption and decryption.
+    /// </summary>
     class RSA
     {
         private BigInteger _N;

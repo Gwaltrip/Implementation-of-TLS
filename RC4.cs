@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TLS
 {
+    /// <summary>
+    ///  A class which handles RC4 encryption and decryption.
+    /// </summary>
     class RC4
     {
         private string _key;
@@ -28,6 +31,16 @@ namespace TLS
         {
             sb = new StringBuilder();
             this._key = key;
+        }
+
+        /// <summary>
+        ///  Creates a random key of the size of 8 bytes.
+        /// </summary>
+        public void KeyGenerator()
+        {
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; 
+            Random random = new Random();
+            _key = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// <summary>

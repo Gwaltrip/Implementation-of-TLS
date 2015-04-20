@@ -64,7 +64,8 @@ namespace TLS
         public void Client()
         {
             rsa = new RSA("00a92cd736f374db51", 0xd4b96f4f, 0xcb97635f);
-            rc4 = new RC4("Rc4Key1");
+            rc4 = new RC4();
+            rc4.KeyGenerator();
             RSA rsaServer = new RSA();
             c = new Client(34567);
 
@@ -110,7 +111,8 @@ namespace TLS
         public void Server()
         {
             rsa = new RSA("00e8a4f6b1c06a554d", 0xf8fbaa77, 0xef336b5b);
-            rc4 = new RC4("Rc4Key0");
+            rc4 = new RC4();
+            rc4.KeyGenerator();
             RSA rsaClient;
             s = new Server(34567);
             c = new Client();
