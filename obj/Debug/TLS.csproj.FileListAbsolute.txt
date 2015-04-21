@@ -1,5 +1,4 @@
 c:\users\gabe\documents\visual studio 2013\Projects\TLS\TLS\bin\Debug\TLS.exe.config
-C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\obj\Debug\TLS.csprojResolveAssemblyReference.cache
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\bin\Debug\TLS.exe
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\bin\Debug\TLS.pdb
 C:\Users\Gabe\documents\visual studio 2013\Projects\TLS\TLS\obj\Debug\TLS.exe

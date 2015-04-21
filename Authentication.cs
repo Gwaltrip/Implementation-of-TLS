@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
 
 namespace TLS
 {
-    class Hash
+    class Authentication
     {
         /// <summary>
         ///  A very simple hash which will only be used to show hashing.
@@ -29,22 +25,32 @@ namespace TLS
         /// <summary>
         ///  A method which handles Signing of messages.
         /// </summary>
-        public string Sign(string input, BigInteger D, BigInteger N)
+        public string Sign(string input, BigInteger E, BigInteger N)
         {
             BigInteger Input = new BigInteger(Encoding.UTF8.GetBytes(input));
 
-            return BigInteger.ModPow(Input, D, N).ToString();
+            return BigInteger.ModPow(Input, E, N).ToString();
+        }
+
+        /// <summary>
+        ///  A method which handles Signing of messages.
+        /// </summary>
+        public string Sign(string input, string E, string N)
+        {
+            BigInteger Input = new BigInteger(Encoding.UTF8.GetBytes(input));
+
+            return BigInteger.ModPow(Input, BigInteger.Parse(E), BigInteger.Parse(N)).ToString();
         }
 
         /// <summary>
         ///  A method which handles verifacation of messages
         /// </summary>
-        public bool Verify(string message, string sign, BigInteger E, BigInteger N)
+        public bool Verify(string message, string sign, string D, string N)
         {
             BigInteger Message = new BigInteger(Encoding.UTF8.GetBytes(message));
-            BigInteger Sign = new BigInteger(Encoding.UTF8.GetBytes(sign));
+            BigInteger Sign = BigInteger.Parse(sign);
 
-            return BigInteger.ModPow(Sign, E, N).Equals(BigInteger.ModPow(Message,1,N));
+            return (BigInteger.ModPow(Message, 1, BigInteger.Parse(N))) == BigInteger.ModPow(Sign,BigInteger.Parse(D),BigInteger.Parse(N));
         }
     }
 }

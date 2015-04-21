@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace TLS
@@ -10,6 +7,7 @@ namespace TLS
     class TLS
     {
         private StringBuilder sb;
+        private Authentication auth;
         private static RSA rsa;
         private static RC4 rc4;
         private static Server s;
@@ -63,6 +61,7 @@ namespace TLS
         /// </summary>
         public void Client()
         {
+            auth = new Authentication();
             rsa = new RSA("00a92cd736f374db51", 0xd4b96f4f, 0xcb97635f);
             rc4 = new RC4();
             rc4.KeyGenerator();
@@ -92,6 +91,10 @@ namespace TLS
             Thread.Sleep(10);
             rc4.Key = rsa.Decrypt(s.Recieve().Replace("\0", string.Empty));
             Console.WriteLine("\"" + rc4.Key + "\"");
+            string sign = s.Recieve().Replace("\0", string.Empty);
+            if (!auth.Verify(rc4.Key, sign, rsaServer.D, rsaServer.N))
+                throw new Exception("Invalid Signature!");
+            Console.WriteLine("Verifcation successful!");
             Thread.Sleep(10);
 
             try
@@ -110,6 +113,7 @@ namespace TLS
         /// </summary>
         public void Server()
         {
+            auth = new Authentication();
             rsa = new RSA("00e8a4f6b1c06a554d", 0xf8fbaa77, 0xef336b5b);
             rc4 = new RC4();
             rc4.KeyGenerator();
@@ -146,6 +150,8 @@ namespace TLS
             Thread.Sleep(10);
             Console.WriteLine("RC4 Key: " + rc4.Key);
             c.Send(rsaClient.Encrypt(rc4.Key));
+            Console.WriteLine("Signature: " + auth.Sign(rc4.Key, rsa.E, rsa.N));
+            c.Send(auth.Sign(rc4.Key,rsa.E,rsa.N));
             Thread.Sleep(10);
 
             try
