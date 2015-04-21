@@ -25,32 +25,32 @@ namespace TLS
         /// <summary>
         ///  A method which handles Signing of messages.
         /// </summary>
-        public string Sign(string input, BigInteger E, BigInteger N)
+        public string Sign(string input, BigInteger D, BigInteger N)
         {
             BigInteger Input = new BigInteger(Encoding.UTF8.GetBytes(input));
 
-            return BigInteger.ModPow(Input, E, N).ToString();
+            return BigInteger.ModPow(Input, D, N).ToString();
         }
 
         /// <summary>
         ///  A method which handles Signing of messages.
         /// </summary>
-        public string Sign(string input, string E, string N)
+        public string Sign(string input, string D, string N)
         {
             BigInteger Input = new BigInteger(Encoding.UTF8.GetBytes(input));
 
-            return BigInteger.ModPow(Input, BigInteger.Parse(E), BigInteger.Parse(N)).ToString();
+            return BigInteger.ModPow(Input, BigInteger.Parse(D), BigInteger.Parse(N)).ToString();
         }
 
         /// <summary>
         ///  A method which handles verifacation of messages
         /// </summary>
-        public bool Verify(string message, string sign, string D, string N)
+        public bool Verify(string message, string sign, string E, string N)
         {
             BigInteger Message = new BigInteger(Encoding.UTF8.GetBytes(message));
             BigInteger Sign = BigInteger.Parse(sign);
 
-            return (BigInteger.ModPow(Message, 1, BigInteger.Parse(N))) == BigInteger.ModPow(Sign,BigInteger.Parse(D),BigInteger.Parse(N));
+            return (BigInteger.ModPow(Message, 1, BigInteger.Parse(N))) == BigInteger.ModPow(Sign, BigInteger.Parse(E), BigInteger.Parse(N));
         }
     }
 }

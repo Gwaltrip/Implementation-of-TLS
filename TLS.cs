@@ -68,6 +68,7 @@ namespace TLS
             RSA rsaServer = new RSA();
             c = new Client(34567);
 
+            Console.WriteLine("::::Client Config::::");
             Console.Write("Port: ");
             Console.WriteLine((34568).ToString());
             Console.Write("N: ");
@@ -77,11 +78,12 @@ namespace TLS
 
             c.Connect();
 
+            Console.WriteLine("Sending port: " + 34568);
             c.Send((34568).ToString());
             Thread.Sleep(10);
             c.Send(rsa.N);
             Thread.Sleep(10);
-            c.Send(rsa.E);
+            c.Send(rsa.D);
 
             s = new Server(34568);
             s.Start();
@@ -89,10 +91,15 @@ namespace TLS
             Thread.Sleep(10);
             rsaServer.D = s.Recieve();
             Thread.Sleep(10);
+            rsaServer.E = s.Recieve();
+            Thread.Sleep(10);
+            Console.WriteLine("::::Server Public Keys::::");
+            Console.WriteLine("N: " + rsaServer.N);
+            Console.WriteLine("D " + rsaServer.D);
             rc4.Key = rsa.Decrypt(s.Recieve().Replace("\0", string.Empty));
-            Console.WriteLine("\"" + rc4.Key + "\"");
+            Console.WriteLine("RC4 Key: \"" + rc4.Key + "\"");
             string sign = s.Recieve().Replace("\0", string.Empty);
-            if (!auth.Verify(rc4.Key, sign, rsaServer.D, rsaServer.N))
+            if (!auth.Verify(rc4.Key, sign, rsaServer.E, rsaServer.N))
                 throw new Exception("Invalid Signature!");
             Console.WriteLine("Verifcation successful!");
             Thread.Sleep(10);
@@ -133,10 +140,11 @@ namespace TLS
 
             string port = s.Recieve();
 
-            Console.WriteLine(port);
+            Console.WriteLine("Receive port: " + port.Replace("\0",string.Empty));
             c.Port = Int32.Parse(port);
             Thread.Sleep(10);
             rsaClient = new RSA(s.Recieve(),s.Recieve());
+            Console.WriteLine("::::Client public keys:::::");
             Console.Write("N Client: ");
             Console.WriteLine(rsaClient.N);
             Thread.Sleep(10);
@@ -148,10 +156,12 @@ namespace TLS
             Thread.Sleep(10);
             c.Send(rsa.D);
             Thread.Sleep(10);
+            c.Send(rsa.E);
+            Thread.Sleep(10);
             Console.WriteLine("RC4 Key: " + rc4.Key);
             c.Send(rsaClient.Encrypt(rc4.Key));
-            Console.WriteLine("Signature: " + auth.Sign(rc4.Key, rsa.E, rsa.N));
-            c.Send(auth.Sign(rc4.Key,rsa.E,rsa.N));
+            Console.WriteLine("Signature: " + auth.Sign(rc4.Key, rsa.D, rsa.N));
+            c.Send(auth.Sign(rc4.Key, rsa.D, rsa.N));
             Thread.Sleep(10);
 
             try
